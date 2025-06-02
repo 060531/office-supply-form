@@ -16,100 +16,161 @@
 
   <style>
     body {
-      font-family: 'Noto Sans Thai', sans-serif;
-      background: url("https://raw.githubusercontent.com/060531/images/main/image.png") no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-    }
-    #menuSection {
-      display: none;
-      height: 100vh;
-    }
-    #menuContent {
-      background-color: rgba(255, 255, 255, 0.85);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      text-align: center;
-      transition: 0.3s;
-      max-width: 400px;
-      margin: auto;
-      margin-top: 5vh;
-    }
-    #menuContent:hover {
-      transform: scale(1.03);
-      background-color: rgba(255, 255, 255, 0.95);
-    }
-    .btn-main {
-      background-color: #6f42c1;
-      color: white;
-      font-size: 1.25rem;
-    }
-    .btn-main:hover {
-      background-color: #FFCE00;
-      color: black;
-    }
-    #formA4Section {
-      display: none;
-      padding: 2rem;
-    }
-    .card {
-      background-color: rgba(255, 255, 255, 0.75);
-      border-radius: 1rem;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      backdrop-filter: blur(6px);
-      max-width: 700px;
-      margin: auto;
-      margin-bottom: 2rem;
-    }
-    .qBox {
-      border: 2px solid #525150;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-    .btn-indigo {
-      background-color: #6f42c1;
-      color: white;
-      transition: 0.3s;
-    }
-    .btn-indigo:hover {
-      background-color: #FFCE00;
-      color: #000;
-    }
-    #formTableWrapper {
-      padding-top: 1rem;
-    }
-    #tableWrapper img {
-      max-width: 60%;
-      border-radius: 8px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-    th, td {
-      padding: 0.5rem;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background-color: #f8f9fa;
-    }
-  .selectable-img {
-    max-width: 100px;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
+  font-family: 'Noto Sans Thai', sans-serif;
+  background: url("https://raw.githubusercontent.com/060531/images/main/image.png") no-repeat center center fixed;
+  background-size: cover;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
 
-  .selectable-img:hover {
-    transform: scale(1.08);
+/* เปลี่ยนภาพ background เมื่ออยู่บนมือถือ */
+@media (max-width: 768px) {
+  body {
+    background: url("https://raw.githubusercontent.com/060531/images/main/รักโลก%20มือถือ.png") no-repeat center center fixed;
+    background-size: cover;
   }
+}
 
-  .row.g-4 {
-    margin-top: 20px;
-  }
+#menuSection {
+  display: none;
+  height: 100vh;
+}
+
+#menuContent {
+  background-color: rgba(255, 255, 255, 0.85);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  transition: 0.3s;
+  width: 100%;
+  max-width: 900px;
+  margin: 5vh auto 0 auto;
+}
+
+#menuContent:hover {
+  transform: scale(1.03);
+  background-color: rgba(255, 255, 255, 0.95);
+}
+
+.btn-main {
+  background-color: #6f42c1;
+  color: white;
+  font-size: 1.25rem;
+}
+
+.btn-main:hover {
+  background-color: #FFCE00;
+  color: black;
+}
+
+/* จัดรูปภาพในหน้าเมนูหลักให้แสดงแบบ 2 คอลัมน์ใน desktop */
+.item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.5rem;
+  justify-items: center;
+  margin-top: 2rem;
+}
+
+.item-grid a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item-grid img {
+  max-width: 100px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: block;
+  margin: 0 auto;
+}
+
+.item-grid img:hover {
+  transform: scale(1.08);
+}
+
+.item-grid .label {
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* ฟอร์ม */
+#formA4Section {
+  display: none;
+  padding: 2rem;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.75);
+  border-radius: 1rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(6px);
+  max-width: 700px;
+  margin: auto;
+  margin-bottom: 2rem;
+}
+
+.qBox {
+  border: 2px solid #525150;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.btn-indigo {
+  background-color: #6f42c1;
+  color: white;
+  transition: 0.3s;
+}
+
+.btn-indigo:hover {
+  background-color: #FFCE00;
+  color: #000;
+}
+
+#formTableWrapper {
+  padding-top: 1rem;
+}
+
+#tableWrapper img {
+  max-width: 60%;
+  border-radius: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 0.5rem;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f8f9fa;
+}
+
+.form-header {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #6f42c1;
+  margin-bottom: 2rem;
+}
+
+.form-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.form-subtitle {
+  font-size: 1rem;
+  color: #6c757d;
+}
   </style>
 </head>
 <body>
@@ -118,8 +179,10 @@
 <section id="menuSection">
   <div class="container d-flex justify-content-center align-items-center min-vh-100">
     <div id="menuContent">
-      <h2 class="mb-3">ฟอร์มการเบิกใช้วัสดุสำนักงาน</h2>
-      <small class="text-muted d-block mb-4">สำนักงานไปรษณีย์เขต 9</small>
+<div class="form-header text-center mb-4">
+  <h2 class="form-title">📋 ฟอร์มการเบิกใช้วัสดุสำนักงาน</h2>
+  <small class="form-subtitle">สำนักงานไปรษณีย์เขต 9</small>
+</div>
 
       <div class="container">
   <div class="row justify-content-center g-4">
