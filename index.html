@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <title>ระบบเบิกวัสดุสำนักงาน</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Bootstrap Icons & FontAwesome -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <!-- jQuery + SweetAlert2 -->
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+  <style>
+    body {
+      font-family: 'Noto Sans Thai', sans-serif;
+      background: url("https://raw.githubusercontent.com/060531/images/main/image.png") no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+    #menuSection {
+      display: none;
+      height: 100vh;
+    }
+    #menuContent {
+      background-color: rgba(255, 255, 255, 0.85);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      transition: 0.3s;
+      max-width: 400px;
+      margin: auto;
+      margin-top: 5vh;
+    }
+    #menuContent:hover {
+      transform: scale(1.03);
+      background-color: rgba(255, 255, 255, 0.95);
+    }
+    .btn-main {
+      background-color: #6f42c1;
+      color: white;
+      font-size: 1.25rem;
+    }
+    .btn-main:hover {
+      background-color: #FFCE00;
+      color: black;
+    }
+    #formA4Section {
+      display: none;
+      padding: 2rem;
+    }
+    .card {
+      background-color: rgba(255, 255, 255, 0.75);
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      backdrop-filter: blur(6px);
+      max-width: 700px;
+      margin: auto;
+      margin-bottom: 2rem;
+    }
+    .qBox {
+      border: 2px solid #525150;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .btn-indigo {
+      background-color: #6f42c1;
+      color: white;
+      transition: 0.3s;
+    }
+    .btn-indigo:hover {
+      background-color: #FFCE00;
+      color: #000;
+    }
+    #formTableWrapper {
+      padding-top: 1rem;
+    }
+    #tableWrapper img {
+      max-width: 60%;
+      border-radius: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      padding: 0.5rem;
+      border-bottom: 1px solid #ddd;
+    }
+    th {
+      background-color: #f8f9fa;
+    }
+  .selectable-img {
+    max-width: 100px;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+  }
+
+  .selectable-img:hover {
+    transform: scale(1.08);
+  }
+
+  .row.g-4 {
+    margin-top: 20px;
+  }
+  </style>
+</head>
+<body>
+
+<!-- ===== เมนูหลัก ===== -->
+<section id="menuSection">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div id="menuContent">
+      <h2 class="mb-3">ฟอร์มการเบิกใช้วัสดุสำนักงาน</h2>
+      <small class="text-muted d-block mb-4">สำนักงานไปรษณีย์เขต 9</small>
+
+      <div class="container">
+  <div class="row justify-content-center g-4">
+    <!-- A4 -->
+    <div class="col-6 col-md-4 text-center">
+      <a href="?page=a4">
+        <img src="https://raw.githubusercontent.com/060531/images/main/A4.jpg"
+             alt="กระดาษ A4"
+             class="img-fluid rounded shadow-sm selectable-img">
+              </a>
+        <div class="mt-2 fw-bold">📄 กระดาษ A4</div>
+    </div>
+
+    <!-- ปากกา -->
+    <div class="col-6 col-md-4 text-center">
+      <a href="?page=pen">
+        <img src="https://cdn-icons-png.flaticon.com/512/1170/1170627.png"
+             alt="ปากกา"
+             class="img-fluid rounded shadow-sm selectable-img">
+              </a>
+        <div class="mt-2 fw-bold">🖊️ ปากกา</div>
+    </div>
+
+    <!-- เทป -->
+    <div class="col-6 col-md-4 text-center">
+      <a href="?page=tape">
+        <img src="https://cdn-icons-png.flaticon.com/512/5046/5046592.png"
+             alt="เทป"
+             class="img-fluid rounded shadow-sm selectable-img">
+              </a>
+        <div class="mt-2 fw-bold">📎 เทป</div>
+    </div>
+
+    <!-- ลวดเย็บกระดาษ -->
+    <div class="col-6 col-md-4 text-center">
+      <a href="?page=stapler">
+        <img src="https://cdn-icons-png.flaticon.com/512/851/851840.png"
+             alt="ลวดเย็บกระดาษ"
+             class="img-fluid rounded shadow-sm selectable-img">
+            </a>
+        <div class="mt-2 fw-bold">📌 ลวดเย็บกระดาษ</div>
+    </div>
+  </div>
+  </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== ฟอร์ม A4 (ใช้งานร่วมกันทุกวัสดุ) ===== -->
+<section id="formA4Section">
+  <div class="container">
+    <div class="card p-4">
+      <div class="text-center bg-success text-white py-2 rounded mb-3">
+        <h4 class="mb-0" id="formTitle">ฟอร์มการเบิกใช้วัสดุ</h4>
+        <small>สำนักงานไปรษณีย์เขต 9</small>
+      </div>
+
+        <!-- ถ้ามี ?id=xxx จะแสดงตารางข้อมูลด้านบน -->
+        <div id="formTableWrapper" style="display: none">
+          <div id="tableWrapper" class="mb-3"></div>
+        </div>
+
+        <!-- ======= ฟอร์มเริ่ม ======= -->
+        <form id="myForm">
+          <div class="qBox">
+            <label for="fname" class="form-label">
+              <i class="bi bi-person-workspace"></i> ลงชื่อผู้ขอเบิก
+            </label>
+            <select id="fname" name="fname" class="form-control" required>
+              <option value="" selected disabled>เลือก..</option>
+              <option value="นายสกล แก้วสุวรรณ">นายสกล แก้วสุวรรณ</option>
+              <option value="ว่าที่ ร.ต.อุทธิศักดิ์ พู่วณิชย์">ว่าที่ ร.ต.อุทธิศักดิ์ พู่วณิชย์</option>
+              <option value="นางลาภนุช มากมณี">นางลาภนุช มากมณี</option>
+              <option value="นางสาวนันทิกา จันทร์คง">นางสาวนันทิกา จันทร์คง</option>
+              <option value="นางสาวศศิวิมล โสตถิสถาวร">นางสาวศศิวิมล โสตถิสถาวร</option>
+              <option value="นางสาวจิราภรณ์ ปิ่นทอง">นางสาวจิราภรณ์ ปิ่นทอง</option>
+              <option value="นางสาวศศิกาญจน์ ไวเรืองศิริพงศ์">นางสาวศศิกาญจน์ ไวเรืองศิริพงศ์</option>
+              <option value="นางสาวกันทิมา เอียดแก้ว">นางสาวกันทิมา เอียดแก้ว</option>
+              <option value="ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศ์">ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศ์</option>
+              <option value="นางสาวปรีดา จันทร์จุฬา">นางสาวปรีดา จันทร์จุฬา</option>
+              <option value="นายสมชาย ขุนภักดี">นายสมชาย ขุนภักดี</option>
+              <option value="นายชัยนรินทร์ ตั้งกิจวรกุล">นายชัยนรินทร์ ตั้งกิจวรกุล</option>
+              <option value="นายนิมิต พีพะระพรรณ">นายนิมิต พีพะระพรรณ</option>
+              <option value="นางสาวชมพูนท มณี">นางสาวชมพูนท มณี</option>
+              <option value="นายอนุวัตณ์ สุดรัก">นายอนุวัตณ์ สุดรัก</option>
+              <option value="นายอรุณชัย รัตนไพ">นายอรุณชัย รัตนไพ</option>
+              <option value="นายวีรพงศ์ คงบุรี">นายวีรพงศ์ คงบุรี</option>
+              <option value="นางสาวกรรณิการ์ บุญทอง">นางสาวกรรณิการ์ บุญทอง</option>
+              <option value="นางภัณฑิรษา แซ่ลิ่ม">นางภัณฑิรษา แซ่ลิ่ม</option>
+              <option value="นางวนิดา เกื้อลาย">นางวนิดา เกื้อลาย</option>
+              <option value="นางสาวธัญลักษณ์ ขุนภักดี">นางสาวธัญลักษณ์ ขุนภักดี</option>
+              <option value="นางสาวขนิษฐา ไชยมุณี">นางสาวขนิษฐา ไชยมุณี</option>
+              <option value="นางสาวกัณฐิกา แซะอาหลำ">นางสาวกัณฐิกา แซะอาหลำ</option>
+              <option value="นางสาวกุลฤดี ทองนพคุณ">นางสาวกุลฤดี ทองนพคุณ</option>
+              <option value="จ.อ.สัมพันธ์ อรัญเวทย์">จ.อ.สัมพันธ์ อรัญเวทย์</option>
+              <option value="นายณัฐพงศ์ ผ่องอำภรณ์">นายณัฐพงศ์ ผ่องอำภรณ์</option>
+              <option value="นายศุภกฤต ไทยนุกูล">นายศุภกฤต ไทยนุกูล</option>
+              <option value="นายพนมพร รักษาราษฎร์">นายพนมพร รักษาราษฎร์</option>
+              <option value="นางสาวพรพิมล ทองตรัง">นางสาวพรพิมล ทองตรัง</option>
+              <option value="นายกฤษฎา กุ้งแก้ว">นายกฤษฎา กุ้งแก้ว</option>
+              <option value="นายกรณ์ดนัย สิงห์คำ">นายกรณ์ดนัย สิงห์คำ</option>
+              <option value="นายวิสูตร หมื่นอรุณ">นายวิสูตร หมื่นอรุณ</option>
+              <option value="นายกรกช รัตนพันธ์">นายกรกช รัตนพันธ์</option>
+              <option value="นายจิรายุ ศศิธร">นายจิรายุ ศศิธร</option>
+              <option value="นางสิรินาฏ วิไลรัตน์">นางสิรินาฏ วิไลรัตน์</option>
+              <option value="นายกฤษดา คำจีน">นายกฤษดา คำจีน</option>
+              <option value="นายคมชาญ สัตตหิรัญ">นายคมชาญ สัตตหิรัญ</option>
+              <option value="นางสาวรชฏ อินทมะโน">นางสาวรชฏ อินทมะโน</option>
+              <option value="นางสาวอะรีนา มะสาลี">นางสาวอะรีนา มะสาลี</option>
+              <option value="นายมะการิม ดอเลาะ">นายมะการิม ดอเลาะ</option>
+              <option value="นายกฤตนัย เกื้อนุ่น">นายกฤตนัย เกื้อนุ่น</option>
+              <option value="นายฟาดิส เบญอาเหม็ด">นายฟาดิส เบญอาเหม็ด</option>
+              <option value="นางสาวธฤคภร มหโชคภัทรเวคิน">นางสาวธฤคภร มหโชคภัทรเวคิน</option>
+            </select>
+          </div>
+
+          <div class="qBox">
+            <label for="department" class="form-label">
+              <i class="bi bi-building"></i> แผนก
+            </label>
+            <select id="department" name="department" class="form-control" required>
+              <option value="" disabled selected>เลือก..</option>
+              <option value="ส่วนอำนวยการและบุคคล">ส่วนอำนวยการและบุคคล</option>
+              <option value="ส่วนทรัพย์สินและพัสดุ">ส่วนทรัพย์สินและพัสดุ</option>
+              <option value="ส่วนการเงินและบัญชี">ส่วนการเงินและบัญชี</option>
+              <option value="ส่วนการตลาดและบริการลูกค้า">ส่วนการตลาดและบริการลูกค้า</option>
+              <option value="ส่วนระบบไปรษณีย์และสารสนเทศ">ส่วนระบบไปรษณีย์และสารสนเทศ</option>
+              <option value="ส่วนบริการหลังการขายและคุณภาพ">ส่วนบริการหลังการขายและคุณภาพ</option>
+              <option value="ส่วนทีมขายและดูแลลูกค้า">ส่วนทีมขายและดูแลลูกค้า</option>
+            </select>
+          </div>
+
+          <div class="qBox">
+            <label for="quantity" class="form-label">
+              <i class="bi bi-list-ol"></i> จำนวนที่เบิก
+            </label>
+            <select id="quantity" name="quantity" class="form-control" required>
+              <option value="" disabled selected>เลือก..</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
+              <option value="อื่น ๆ">อื่น ๆ</option>
+            </select>
+          </div>
+
+          <div class="qBox" id="additionalInfoField" style="display:none">
+            <label for="additionalInfo" class="form-label">
+              <i class="fa-solid fa-info-circle"></i> ข้อมูลเพิ่มเติม
+            </label>
+            <input
+              type="text"
+              id="additionalInfo"
+              name="additionalInfo"
+              class="form-control"
+              placeholder="กรอกข้อมูลเพิ่มเติม"
+            />
+          </div>
+
+          <div class="qBox">
+            <label for="purpose" class="form-label">
+              <i class="bi bi-journal"></i> ความจำเป็นที่เบิก
+            </label>
+            <select id="purpose" name="purpose" class="form-control" required>
+              <option value="" disabled selected>เลือก..</option>
+              <option value="ประจำแผนก">ประจำแผนก</option>
+              <option value="สำหรับเครื่องถ่ายเอกสาร">สำหรับเครื่องถ่ายเอกสาร</option>
+              <option value="ส่วนตัว">ส่วนตัว</option>
+            </select>
+          </div>
+
+         <!-- ปุ่ม Submit -->
+<div class="d-grid mt-4">
+  <button type="button" id="submitBtn" class="btn btn-indigo btn-lg">
+    <span id="spinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
+    <span id="submitText">Submit</span>
+  </button>
+</div>
+
+<!-- ปุ่มกลับหน้าหลัก จัดกึ่งกลางและเว้นระยะ -->
+<div class="text-center mt-4">
+  <a href="?" class="btn btn-secondary btn-lg px-4">
+    <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
+  </a>
+</div>
+        </form>
+        <!-- ======= จบฟอร์ม A4 ======= -->
+      </div>
+    </div>
+  </section>
+
+  <script>
+  /**
+   * สลับแสดง/ซ่อน <section> ตามพารามิเตอร์ ?page ใน URL
+   */
+  function toggleSections() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+
+    const menuSection = document.getElementById('menuSection');
+    const formSection = document.getElementById('formA4Section');
+
+    if (page) {
+      menuSection.style.display = 'none';
+      formSection.style.display = 'block';
+      updateFormTitle(page); // ← ปรับหัวข้ออัตโนมัติ
+    } else {
+      menuSection.style.display = 'block';
+      formSection.style.display = 'none';
+    }
+  }
+
+  /**
+   * เปลี่ยนหัวข้อของฟอร์มตาม page เช่น a4, pen, tape
+   */
+  function updateFormTitle(page) {
+    const titleMap = {
+      a4: 'ฟอร์มการเบิกใช้กระดาษ A4',
+      pen: 'ฟอร์มการเบิกใช้ปากกา',
+      tape: 'ฟอร์มการเบิกใช้เทป',
+      stapler: 'ฟอร์มการเบิกใช้ลวดเย็บกระดาษ',
+    };
+    const title = titleMap[page] || 'ฟอร์มการเบิกใช้วัสดุสำนักงาน';
+    document.querySelector('#formA4Section h4').innerText = title;
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    toggleSections();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (id) {
+      google.script.run.withSuccessHandler((data) => {
+        let currentDate = new Date();
+        let formattedDate = currentDate.toLocaleDateString('th-TH', {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+        let formattedTime = currentDate.toLocaleTimeString('th-TH');
+        document.getElementById('formTableWrapper').style.display = 'block';
+        document.getElementById('tableWrapper').innerHTML = `
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td colspan="3" class="text-center">
+                  <img src="${data[0][4]}" alt="item-image" class="img-fluid" />
+                </td>
+              </tr>
+              <tr><th>วันที่</th><td>:</td><td>${formattedDate}</td></tr>
+              <tr><th>เวลา</th><td>:</td><td>${formattedTime}</td></tr>
+              <tr><th>ชื่ออุปกรณ์</th><td>:</td><td>${data[0][1]}</td></tr>
+            </table>
+          </div>
+        `;
+      }).search(id);
+    }
+  });
+
+  // ถ้าเลือก “อื่น ๆ” → แสดงช่องข้อมูลเพิ่มเติม
+  document.getElementById('quantity').addEventListener('change', function () {
+    document.getElementById('additionalInfoField').style.display =
+      this.value === 'อื่น ๆ' ? 'block' : 'none';
+  });
+
+  // กด Submit → ตรวจสอบ → ส่งข้อมูลไปยัง Google Sheets
+  document.getElementById('submitBtn').addEventListener('click', function () {
+    const fname = document.getElementById('fname').value;
+    const department = document.getElementById('department').value;
+    const quantity = document.getElementById('quantity').value;
+    const purpose = document.getElementById('purpose').value;
+    const additionalInfo = document.getElementById('additionalInfo').value || '';
+    const time = new Date().toLocaleString();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page') || 'unknown'; // ← ประเภทวัสดุ
+
+    if (!fname || !department || !quantity || !purpose) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+      });
+      return;
+    }
+
+    document.getElementById('submitText').innerText = 'กำลังบันทึกข้อมูล...';
+    document.getElementById('spinner').classList.remove('d-none');
+
+    google.script.run
+      .withSuccessHandler(() => {
+        document.getElementById('myForm').reset();
+        document.getElementById('additionalInfoField').style.display = 'none';
+        Swal.fire({
+          icon: 'success',
+          title: 'บันทึกข้อมูลเรียบร้อย',
+          showConfirmButton: true,
+        });
+        document.getElementById('submitText').innerText = 'Submit';
+        document.getElementById('spinner').classList.add('d-none');
+      })
+      .saveDataToSheet(
+        page,          // ← ส่งประเภทวัสดุไป
+        fname,
+        department,
+        quantity,
+        purpose,
+        additionalInfo,
+        time
+      );
+  });
+</script>
+  
+</body>
+</html>
