@@ -111,34 +111,37 @@
 /* =========================
    ปรับขนาดบนมือถือ
    ========================= */
-@media (max-width: 768px) {
-  /* ลดขนาดโลโก้ และเลื่อนชิดซ้าย */
-  .logo-img {
-    width: 20%;    /* ดูตามความเหมาะสม */
+@media (max-width: 576px) {
+  .form-header {
+    /* เพิ่ม padding ซ้ายขวา กันไม่ให้ข้อความติดขอบ */
+    padding: 0 1rem;
+    /* ให้เด็ก flex ห่อเป็นบรรทัดได้ ถ้ามันยาวเกิน */
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
   }
 
-  /* ลดขนาดหัวข้อ ย่อให้พออ่านได้ */
+  .form-header .logo-img {
+    /* ลดขนาดโลโก้อีกนิด */
+    width: 15%;
+  }
+
   .form-title {
-    font-size: 1.6rem !important;     /* ปรับจนพอดีกับความกว้างมือถือ */
+    /* ลดไซส์ลงหน่อย ไม่ให้ล้น */
+    font-size: 1.4rem !important;
     line-height: 1.1 !important;
-    white-space: nowrap;              /* ห้ามตัดบรรทัด */
-    overflow: hidden;                 /* ถ้ายังล้นจะซ่อนส่วนเกิน */
-    text-overflow: ellipsis;          /* เติม … ถ้ายาวเกิน */
+    /* อนุญาตให้ห่อบรรทัดได้ ถ้ายังล้นจริงๆ */
+    white-space: normal !important;
+    text-align: center;
   }
 
-  /* ลดขนาดซับไตเติ้ล และให้สีเข้ม */
   .form-subtitle {
-    font-size: 0.6rem !important;
+    font-size: 0.8rem !important;
     color: #000 !important;
+    text-align: center;
   }
-
-  /* ย่อภาพสินค้าให้พอดีกับความกว้างคอลัมน์ */
-  .selectable-img {
-    max-width: 100%;
-    height: auto;
-  }
-
 }
+
   </style>
 </head>
 
