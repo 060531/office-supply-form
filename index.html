@@ -113,25 +113,25 @@
    ========================= */
 @media (max-width: 576px) {
   .form-header {
-    /* เพิ่ม padding ซ้ายขวา กันไม่ให้ข้อความติดขอบ */
-    padding: 0 1rem;
-    /* ให้เด็ก flex ห่อเป็นบรรทัดได้ ถ้ามันยาวเกิน */
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 0.5rem;
+    padding-left: 0;     /* ชิดเต็มซ้าย */
+    padding-right: 1rem; /* กันข้อความติดขอบขวา */
+  }
+  .logo-img {
+    margin-right: 0.5rem; /* เว้นขวาอีกนิดก่อนข้อความ */
   }
 
-  .form-header .logo-img {
-    /* ลดขนาดโลโก้อีกนิด */
-    width: 15%;
+  /* ห่อข้อความลงบรรทัดเดียวตรงกลาง */
+  .form-header > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .form-title {
-    /* ลดไซส์ลงหน่อย ไม่ให้ล้น */
     font-size: 1.3rem !important;
     line-height: 1.1 !important;
-    /* อนุญาตให้ห่อบรรทัดได้ ถ้ายังล้นจริงๆ */
-    white-space: normal !important;
+    white-space: normal !important; /* ให้ห่อได้ */
     text-align: center;
   }
 
@@ -158,7 +158,7 @@
     <!-- โลโก้เล็ก ๆ ด้านซ้าย -->
     <img src="https://raw.githubusercontent.com/060531/images/main/Photoroom_25680609_212938.png"
          alt="โลโก้ระบบ"
-         class="logo-img me-3" />
+         class="logo-img" />
     <!-- ส่วนหัว title + subtitle -->
     <div>
       <h2 class="form-title mb-1">
