@@ -27,18 +27,17 @@
     }
     @media (max-width: 768px) {
       body {
-        background: url("https://raw.githubusercontent.com/060531/images/main/ฉากหลัง.JPG") no-repeat center center fixed;
         background-size: cover;
       }
     }
 
     /* เริ่มต้นซ่อนทุก section */
-    #menuSection, #g22Section, #formA4Section {
+    #menuSection, #g22Section, #staplerSelectSection, #formA4Section {
       display: none;
     }
 
-    /* ตกแต่งกล่องเมนูหลัก, หน้าเลือกสี, ฟอร์ม */
-    #menuContent, #g22Content, #formContent {
+    /* ตกแต่งกล่องเมนูหลัก, หน้าเลือกสี, หน้าเลือกขนาด, ฟอร์ม */
+    #menuContent, #g22Content, #staplerSelectContent, #formContent {
       background-color: rgba(255, 255, 255, 0.85);
       padding: 2rem;
       border-radius: 1rem;
@@ -48,7 +47,7 @@
       margin: 5vh auto 0 auto;
       transition: 0.3s;
     }
-    #menuContent:hover, #g22Content:hover, #formContent:hover {
+    #menuContent:hover, #g22Content:hover, #staplerSelectContent:hover, #formContent:hover {
       transform: scale(1.03);
       background-color: rgba(255, 255, 255, 0.32);
     }
@@ -56,7 +55,7 @@
     .form-header {
       padding-top: 1rem;
       padding-bottom: 1rem;
-      border-bottom: 2px solid #6f42c1;
+      border-bottom: 2px solid #e31e1e;
       margin-bottom: 2rem;
       text-align: center;
     }
@@ -76,7 +75,7 @@
       margin-bottom: 1rem;
     }
     .btn-indigo {
-      background-color: #6f42c1;
+      background-color: #c14242;
       color: white;
       transition: 0.3s;
     }
@@ -84,6 +83,31 @@
       background-color: #FFCE00;
       color: #000;
     }
+.form-header {
+  display: flex;
+  align-items: center;
+  gap: 3.5rem;       /* เว้นระยะระหว่างรูปกับข้อความ */
+  margin-bottom: 3rem;
+}
+
+.logo-img {
+  width: 13%;
+  height: auto;
+  display: block;
+  /* เอา margin-right ออก เพราะใช้ gap แทน */
+}
+
+/* ขนาดตัวอักษรตามที่ตั้งไว้ */
+.form-title {
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: #333;
+}
+.form-subtitle {
+  font-size: 1.2rem;
+  color: #000;
+  font-weight: 500;
+}
   </style>
 </head>
 
@@ -94,17 +118,23 @@
        – แสดงไอคอนวัสดุต่างๆ พร้อม “stock” สดๆ จาก Firebase
        – แต่ละไอคอนเป็นลิงก์ ?page=<a4|pen|tape|stapler|g22>
        ===================================================== -->
-  <section id="menuSection">
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-      <div id="menuContent">
-        <div class="form-header mb-4">
-          <h2 class="form-title">
-   <span style="font-weight:bold; color:red;">POST</span> 
-  <span style="font-weight:bold; color:rgb(1, 68, 1);">พอเพียง</span> 
-  <span style="font-weight:bold; color:red;">SYSTEM</span>
-</h2>
-          <small class="form-subtitle">ระบบบริหารจัดการวัสดุสิ้นเปลืองสำนักงาน</small>
-        </div>
+<section id="menuSection">
+  <div id="menuContent">
+  <div class="form-header mb-4 d-flex align-items-center">
+    <!-- โลโก้เล็ก ๆ ด้านซ้าย -->
+    <img src="https://raw.githubusercontent.com/060531/images/main/Photoroom_25680609_212938.png"
+         alt="โลโก้ระบบ"
+         class="logo-img me-3" />
+    <!-- ส่วนหัว title + subtitle -->
+    <div>
+      <h2 class="form-title mb-1">
+        <span style="font-weight:bold; color:red;">POST</span>
+        <span style="font-weight:bold; color:rgb(1, 68, 1);">พอเพียง</span>
+        <span style="font-weight:bold; color:red;">SYSTEM</span>
+      </h2>
+      <small class="form-subtitle">ระบบบริหารจัดการวัสดุสิ้นเปลืองสำนักงาน</small>
+    </div>
+  </div>
 
         <div class="container">
           <div class="row justify-content-center g-4">
@@ -141,16 +171,15 @@
               <div id="stock-Brown Tape" class="text-muted">คงเหลือ: …</div>
             </div>
 
-            <!-- ลวดเย็บกระดาษ -->
-            <div class="col-6 col-md-4 text-center">
-              <a href="?page=stapler">
-                <img src="https://raw.githubusercontent.com/060531/images/main/Max8.jpg"
-                     alt="ลวดเย็บกระดาษ"
-                     class="img-fluid rounded shadow-sm selectable-img" />
-              </a>
-              <div class="mt-2 fw-bold">📌 ลวดเย็บกระดาษ</div>
-              <div id="stock-stapler" class="text-muted">คงเหลือ: …</div>
-            </div>
+          <!-- ลวดเย็บกระดาษ -->
+          <div class="col-6 col-md-4 text-center">
+            <a href="?page=stapler">
+              <img src="https://raw.githubusercontent.com/060531/images/main/Max8.jpg" alt="ลวดเย็บกระดาษ"
+                   class="img-fluid rounded shadow-sm selectable-img" />
+            </a>
+            <div class="mt-2 fw-bold">📌 ลวดเย็บกระดาษ</div>
+            <div id="stock-stapler" class="text-muted">คงเหลือ: …</div>
+          </div>
 
             <!-- แฟ้มเอกสาร ก.22 -->
             <div class="col-6 col-md-4 text-center">
@@ -309,6 +338,59 @@
     </div> <!-- end .container -->
   </section>
 
+ 
+  <!-- =======================================================
+       4.1) SECTION: หน้าเลือกขนาดลวดเย็บกระดาษ (staplerSelectSection)
+       ======================================================= -->
+<section id="staplerSelectSection">
+  <div class="container d-flex justify-content-center align-items-center min-vh-100">
+    <div id="staplerSelectContent" class="w-100">
+      <div class="form-header text-center mb-4">
+        <h2 class="form-title">📌 เลือกขนาดลวดเย็บกระดาษ</h2>
+        <small class="form-subtitle">สำนักงานไปรษณีย์เขต 9</small>
+      </div>
+      <div class="row justify-content-center g-4">
+        <!-- No.10 -->
+        <div class="col-6 col-md-3 text-center">
+          <a href="?page=stapler&size=No.10">
+            <img src="https://raw.githubusercontent.com/060531/images/main/Max%2010.webp"
+                 alt="No.10"
+                 class="img-fluid rounded shadow-sm" />
+          </a>
+          <div class="mt-2 fw-bold">📌 No.10</div>
+          <!-- data-size สำหรับแสดง, data-key สำหรับเก็บใน Firebase -->
+          <div class="text-muted stock-stapler"
+               data-size="No.10"
+               data-key="No_10">
+            คงเหลือ: …
+          </div>
+        </div>
+        <!-- No.35 -->
+        <div class="col-6 col-md-3 text-center">
+          <a href="?page=stapler&size=No.35">
+            <img src="https://raw.githubusercontent.com/060531/images/main/Max%2035.jpg"
+                 alt="No.35"
+                 class="img-fluid rounded shadow-sm" />
+          </a>
+          <div class="mt-2 fw-bold">📌 No.35</div>
+          <div class="text-muted stock-stapler"
+               data-size="No.35"
+               data-key="No_35">
+            คงเหลือ: …
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-4">
+          <div class="text-center mt-4">
+            <a href="?" class="btn btn-secondary btn-lg px-4">
+              <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
+            </a>
+          </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
   <!-- ===========================================================
        5) SECTION: ฟอร์ม A4 / pen / tape / stapler / g22 (formA4Section)
@@ -457,69 +539,79 @@
     const db = firebase.database();
 
 
-    // 7.2) toggleSections() – เปลี่ยนหน้าจอ ตาม URL params
+    // 7.2) toggleSections() – เปลี่ยนหน้าจอ ตาม URL
     function toggleSections() {
-      const urlParams = new URLSearchParams(window.location.search);
-      const page  = urlParams.get('page');            // เช่น 'a4', 'pen', 'tape', 'stapler', 'g22'
-      const color = urlParams.get('color') || '';      // เฉพาะกรณี g22
+      const urlParams            = new URLSearchParams(window.location.search);
+      const page                 = urlParams.get('page');
+      const color                = urlParams.get('color') || '';
+      const size                 = urlParams.get('size')  || '';
 
-      const menuSection = document.getElementById('menuSection');
-      const g22Section  = document.getElementById('g22Section');
-      const formSection = document.getElementById('formA4Section');
+      const menuSection          = document.getElementById('menuSection');
+      const g22Section           = document.getElementById('g22Section');
+      const staplerSelectSection = document.getElementById('staplerSelectSection');
+      const formSection          = document.getElementById('formA4Section');
 
-      // 1) ซ่อนทุก Section ก่อน
-      menuSection.style.display = 'none';
-      g22Section.style.display  = 'none';
-      formSection.style.display = 'none';
+      // ซ่อนทุก section
+      [menuSection, g22Section, staplerSelectSection, formSection]
+        .forEach(s => s.style.display = 'none');
 
-      // 2) หากไม่มี ?page → แสดงหน้าเมนูหลัก
+      // แสดงตามเงื่อนไข
       if (!page) {
         menuSection.style.display = 'block';
         return;
       }
-
-      // 3) หาก ?page=g22 แต่ยังไม่มี &color → แสดงหน้าเลือกสี
       if (page === 'g22' && !color) {
         g22Section.style.display = 'block';
         return;
       }
-
-      // 4) กรณีอื่น ๆ → แสดงหน้า Form
+      if (page === 'stapler' && !size) {
+        staplerSelectSection.style.display = 'block';
+        return;
+      }
       formSection.style.display = 'block';
 
-      // เปลี่ยน Title ของฟอร์มตามวัสดุ (และสี หากเป็น g22)
-      const titleMap = {
-        'a4':      'ฟอร์มการเบิกใช้กระดาษ A4',
-        'pen':     'ฟอร์มการเบิกใช้เทปใส',
-        'tape':    'ฟอร์มการเบิกใช้เทปน้ำตาล',
-        'stapler': 'ฟอร์มการเบิกใช้ลวดเย็บกระดาษ',
-        'g22':     'ฟอร์มการเบิกแฟ้ม ก.22 (' + decodeURIComponent(color) + ')'
-      };
-      const formTitleEl = document.querySelector('#formA4Section h4');
-      formTitleEl.innerText = titleMap[page] || 'ฟอร์มการเบิกใช้วัสดุสำนักงาน';
+      // 1) สร้าง titleMap ให้รองรับ size สำหรับ stapler
+const titleMap = {
+  'a4':      'ฟอร์มการเบิกใช้กระดาษ A4',
+  'pen':     'ฟอร์มการเบิกใช้เทปใส',
+  'tape':    'ฟอร์มการเบิกใช้เทปน้ำตาล',
+  'stapler': `ฟอร์มการเบิกใช้ลวดเย็บกระดาษ (${size})`,
+  'g22':     `ฟอร์มการเบิกแฟ้ม ก.22 (${decodeURIComponent(color)})`
+};
+const formTitleEl = document.querySelector('#formA4Section h4');
+formTitleEl.innerText = titleMap[page] || 'ฟอร์มการเบิกใช้วัสดุสำนักงาน';
 
-      // ซ่อน/แสดงฟิลด์ภายในฟอร์ม ตามกรณี g22 หรือไม่
-      const g22ColorField = document.getElementById('g22ColorField');
-      const departmentBox = document.getElementById('departmentBox');
-      const fnameBox      = document.getElementById('fnameBox');
-      const purposeField  = document.getElementById('purposeField');
+// 2) ซ่อน/แสดงฟิลด์ภายในฟอร์ม ตามกรณี g22 หรือ stapler
+const g22ColorField    = document.getElementById('g22ColorField');
+const staplerSizeField = document.getElementById('staplerSizeField');
+const departmentBox    = document.getElementById('departmentBox');
+const fnameBox         = document.getElementById('fnameBox');
+const purposeField     = document.getElementById('purposeField');
 
-      if (page === 'g22') {
-        // ถ้าเป็นแฟ้ม ก.22 → แสดง “สีที่เลือก” และแสดง “แผนก/ชื่อ/ความจำเป็น” ตามปกติ
-        g22ColorField.style.display = 'block';
-        document.getElementById('g22Color').value = decodeURIComponent(color);
+if (page === 'g22') {
+  // ถ้าเป็นแฟ้ม ก.22
+  g22ColorField.style.display    = 'block';
+  staplerSizeField.style.display = 'none';
+  document.getElementById('g22Color').value = decodeURIComponent(color);
 
-        departmentBox.style.display = 'block';
-        fnameBox.style.display      = 'block';
-        purposeField.style.display  = 'block';
-      } else {
-        // กรณี a4/pen/tape/stapler → แสดงฟิลด์ตามปกติ (ยกเว้น g22ColorField)
-        g22ColorField.style.display = 'none';
-        departmentBox.style.display = 'block';
-        fnameBox.style.display      = 'block';
-        purposeField.style.display  = 'block';
+} else if (page === 'stapler') {
+  // ถ้าเป็น stapler
+  staplerSizeField.style.display = 'block';
+  g22ColorField.style.display    = 'none';
+  document.getElementById('staplerSize').value = size;
+
+} else {
+  // กรณีอื่น ๆ
+  g22ColorField.style.display    = 'none';
+  staplerSizeField.style.display = 'none';
+}
+
+// 3) ฟิลด์ทั่วไป ให้แสดงเสมอ (ยกเว้นกรณี admit จะซ่อนภายหลัง)
+departmentBox.style.display = 'block';
+fnameBox.style.display      = 'block';
+purposeField.style.display  = 'block';
       }
-    }
+    
 
     // เรียก toggleSections() เมื่อ DOM โหลดเสร็จ
     window.addEventListener('DOMContentLoaded', () => {
@@ -719,58 +811,65 @@
       // =====================================================================================
       // 7.7) อ่าน “stock รวม” (หน้าเมนูหลัก) และ “stock แต่ละสี” (หน้า g22Section) จาก Firebase
       // =====================================================================================
-      window.addEventListener('load', () => {
-        // (ก) อัปเดต “สต็อกรวม” ของแต่ละวัสดุ บนหน้าเมนูหลัก
-        const stockElements = {
-          "a4":         document.getElementById("stock-a4"),
-          "Clear Tape": document.getElementById("stock-Clear Tape"),
-          "Brown Tape": document.getElementById("stock-Brown Tape"),
-          "stapler":    document.getElementById("stock-stapler"),
-          "g22":        document.getElementById("stock-g22")
-        };
+     window.addEventListener('load', () => {
+  const stockElements = {
+    "a4":         document.getElementById("stock-a4"),
+    "Clear Tape": document.getElementById("stock-Clear Tape"),
+    "Brown Tape": document.getElementById("stock-Brown Tape"),
+    "stapler":    document.getElementById("stock-stapler"),
+    "g22":        document.getElementById("stock-g22")
+  };
 
-        db.ref("stock").on("value", (snapshot) => {
-          const stockData = snapshot.val() || {};
+  db.ref("stock").on("value", (snapshot) => {
+    const stockData = snapshot.val() || {};
 
-          // a4
-          if (stockData["a4"] !== undefined) {
-            stockElements["a4"].innerText = `คงเหลือ: ${stockData["a4"]}`;
-          }
-          // Clear Tape
-          if (stockData["Clear Tape"] !== undefined) {
-            stockElements["Clear Tape"].innerText = `คงเหลือ: ${stockData["Clear Tape"]}`;
-          }
-          // Brown Tape
-          if (stockData["Brown Tape"] !== undefined) {
-            stockElements["Brown Tape"].innerText = `คงเหลือ: ${stockData["Brown Tape"]}`;
-          }
-          // stapler
-          if (stockData["stapler"] !== undefined) {
-            stockElements["stapler"].innerText = `คงเหลือ: ${stockData["stapler"]}`;
-          }
+    // —— อัปเดต stock หน้าเมนูหลัก ——
+    if (stockData["a4"] !== undefined) {
+      stockElements["a4"].innerText = `คงเหลือ: ${stockData["a4"]}`;
+    }
+    if (stockData["Clear Tape"] !== undefined) {
+      stockElements["Clear Tape"].innerText = `คงเหลือ: ${stockData["Clear Tape"]}`;
+    }
+    if (stockData["Brown Tape"] !== undefined) {
+      stockElements["Brown Tape"].innerText = `คงเหลือ: ${stockData["Brown Tape"]}`;
+    }
 
-          // กรณี g22 (มี sub-nodes เป็นแต่ละสี) → รวมยอดทุกสี แล้วแสดง
-          if (stockData["g22"]) {
-            let totalG22 = 0;
-            Object.values(stockData["g22"]).forEach(val => {
-              if (!isNaN(parseInt(val, 10))) {
-                totalG22 += parseInt(val, 10);
-              }
-            });
-            stockElements["g22"].innerText = `คงเหลือ (รวมทุกสี): ${totalG22}`;
-          }
+    // stapler รวมทุกขนาด
+    if (stockData["stapler"] && typeof stockData["stapler"] === "object") {
+      const totalStapler = Object.values(stockData["stapler"])
+        .reduce((sum, v) => sum + (parseInt(v,10) || 0), 0);
+      stockElements["stapler"].innerText = `คงเหลือ (รวมทุกขนาด): ${totalStapler}`;
+    } else if (stockData["stapler"] !== undefined) {
+      stockElements["stapler"].innerText = `คงเหลือ: ${stockData["stapler"]}`;
+    }
 
-          // (ข) ดึงยอด per-color ของ g22 มาอัปเดตในหน้า g22Section
-          const perColorEls = document.querySelectorAll('.stock-g22');
-          perColorEls.forEach(el => {
-            const colorName = el.getAttribute('data-color');
-            const count = (stockData["g22"] && stockData["g22"][colorName] !== undefined)
-                            ? stockData["g22"][colorName]
-                            : "ไม่พบข้อมูล";
-            el.innerText = `คงเหลือ: ${count}`;
-          });
-        });
-      });
+    // g22 รวมทุกสี
+    if (stockData["g22"]) {
+      const totalG22 = Object.values(stockData["g22"])
+        .reduce((sum, v) => sum + (parseInt(v,10) || 0), 0);
+      stockElements["g22"].innerText = `คงเหลือ (รวมทุกสี): ${totalG22}`;
+    }
+
+    // —— อัปเดต stock per-color ของ g22 ——
+    document.querySelectorAll('.stock-g22').forEach(el => {
+      const colorName = el.dataset.color;
+      const cnt = (stockData["g22"] && stockData["g22"][colorName] !== undefined)
+                  ? stockData["g22"][colorName]
+                  : 0;
+      el.innerText = `คงเหลือ: ${cnt}`;
+    });
+
+    // —— อัปเดต stock per-size ของ stapler ——
+    document.querySelectorAll('.stock-stapler').forEach(el => {
+      const key = el.dataset.key; // เช่น "No_10" หรือ "No_35"
+      const cnt = (stockData["stapler"] && stockData["stapler"][key] !== undefined)
+                  ? stockData["stapler"][key]
+                  : 0;
+      el.innerText = `คงเหลือ: ${cnt}`;
+    });
+
+  });
+});
     }); // จบ window.DOMContentLoaded
   </script>
 
