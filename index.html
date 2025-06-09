@@ -119,8 +119,11 @@
 
   /* ลดขนาดหัวข้อ ย่อให้พออ่านได้ */
   .form-title {
-    font-size: 1.3rem !important;
-    line-height: 1.0;
+    font-size: 1.6rem !important;     /* ปรับจนพอดีกับความกว้างมือถือ */
+    line-height: 1.1 !important;
+    white-space: nowrap;              /* ห้ามตัดบรรทัด */
+    overflow: hidden;                 /* ถ้ายังล้นจะซ่อนส่วนเกิน */
+    text-overflow: ellipsis;          /* เติม … ถ้ายาวเกิน */
   }
 
   /* ลดขนาดซับไตเติ้ล และให้สีเข้ม */
