@@ -137,12 +137,14 @@
   }
 
   .form-subtitle {
-    font-size: 0.9rem !important;
+    /* ให้เป็น inline-block แล้วขยับมาอยู่ข้าง ๆ */
+    display: inline-block !important;
+    font-size: 0.7rem !important;
     color: #000 !important;
-    text-align: center;
+    margin: 0 0 0 0.5rem;   /* ชิดข้างขวา h2 0.5rem */
+    white-space: nowrap !important;
   }
 }
-
   </style>
 </head>
 
