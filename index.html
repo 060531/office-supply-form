@@ -5,250 +5,127 @@
   <title>ระบบเบิกวัสดุสำนักงาน</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- ========== 1) ปลั๊กอินและไลบรารีต่างๆ ========== -->
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS & Icons -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <!-- Bootstrap Icons & FontAwesome -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
-  <!-- jQuery + SweetAlert2 -->
-  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <style>
-    /* ========== 2) CSS Style ========== */
     body {
       font-family: 'Noto Sans Thai', sans-serif;
       background: url("https://raw.githubusercontent.com/060531/images/main/ฉากหลัง.JPG") no-repeat center center fixed;
       background-size: cover;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
+      margin: 0; padding: 0; min-height: 100vh;
     }
-    @media (max-width: 768px) {
-      body {
-        background-size: cover;
-      }
-    }
-
     /* เริ่มต้นซ่อนทุก section */
     #menuSection, #g22Section, #staplerSelectSection, #formA4Section {
       display: none;
     }
-
-    /* ตกแต่งกล่องเมนูหลัก, หน้าเลือกสี, หน้าเลือกขนาด, ฟอร์ม */
+    /* กล่องเนื้อหา */
     #menuContent, #g22Content, #staplerSelectContent, #formContent {
-      background-color: rgba(255, 255, 255, 0.85);
-      padding: 2rem;
-      border-radius: 1rem;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      width: 100%;
-      max-width: 900px;
-      margin: 5vh auto 0 auto;
+      background-color: rgba(255,255,255,0.85);
+      padding: 2rem; border-radius: 1rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 100%; max-width: 900px; margin: 5vh auto 0;
       transition: 0.3s;
     }
     #menuContent:hover, #g22Content:hover, #staplerSelectContent:hover, #formContent:hover {
-      transform: scale(1.03);
-      background-color: rgba(255, 255, 255, 0.32);
+      transform: scale(1.03); background-color: rgba(255,255,255,0.32);
     }
-
-    .form-header {
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      border-bottom: 2px solid #e31e1e;
-      margin-bottom: 2rem;
-      text-align: center;
+    .form-header { padding-top:1rem; padding-bottom:1rem; border-bottom:2px solid #e31e1e; margin-bottom:2rem; text-align:center; }
+    .form-header.d-flex { align-items:center; gap:3.5rem; }
+    .logo-img { width:13%; height:auto; }
+    .form-title { font-size:2.8rem; font-weight:700; color:#333; }
+    .form-subtitle { font-size:1.2rem; color:#000; font-weight:500; }
+    @media (max-width:576px) {
+      .form-header { padding-left:0; padding-right:1rem; }
+      .logo-img { width:20%; margin-right:0.5rem; }
+      .form-header > div { flex:1; display:flex; flex-direction:column; align-items:center; }
+      .form-title { font-size:1.3rem!important; line-height:1.1!important; white-space:normal!important; text-align:center; }
+      .form-subtitle { display:inline-block!important; font-size:0.7rem!important; color:#000!important; margin:0 0 0 0.5rem; white-space:nowrap!important; }
     }
-    .form-title {
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: #333;
-    }
-    .form-subtitle {
-      font-size: 1rem;
-      color: #6c757d;
-    }
-    .qBox {
-      border: 2px solid #525150;
-      border-radius: 12px;
-      padding: 1rem;
-      margin-bottom: 1rem;
-    }
-    .btn-indigo {
-      background-color: #c14242;
-      color: white;
-      transition: 0.3s;
-    }
-    .btn-indigo:hover {
-      background-color: #FFCE00;
-      color: #000;
-    }
-.form-header {
-  display: flex;
-  align-items: center;
-  gap: 3.5rem;       /* เว้นระยะระหว่างรูปกับข้อความ */
-  margin-bottom: 3rem;
-}
-
-.logo-img {
-  width: 13%;
-  height: auto;
-  display: block;
-  /* เอา margin-right ออก เพราะใช้ gap แทน */
-}
-
-/* ขนาดตัวอักษรตามที่ตั้งไว้ */
-.form-title {
-  font-size: 2.8rem;
-  font-weight: 700;
-  color: #333;
-}
-.form-subtitle {
-  font-size: 1.2rem;
-  color: #000;
-  font-weight: 500;
-}
-/* =========================
-   ปรับขนาดบนมือถือ
-   ========================= */
-@media (max-width: 576px) {
-  .form-header {
-    padding-left: 0;     /* ชิดเต็มซ้าย */
-    padding-right: 1rem; /* กันข้อความติดขอบขวา */
-  }
-  .logo-img {
-    width: 20%;  /* จากเดิม 15% → ลองเป็น 20% */
-    margin-right: 0.5rem; /* เว้นขวาอีกนิดก่อนข้อความ */
-  }
-
-  /* ห่อข้อความลงบรรทัดเดียวตรงกลาง */
-  .form-header > div {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .form-title {
-    font-size: 1.3rem !important;
-    line-height: 1.1 !important;
-    white-space: normal !important; /* ให้ห่อได้ */
-    text-align: center;
-  }
-
-  .form-subtitle {
-    /* ให้เป็น inline-block แล้วขยับมาอยู่ข้าง ๆ */
-    display: inline-block !important;
-    font-size: 0.7rem !important;
-    color: #000 !important;
-    margin: 0 0 0 0.5rem;   /* ชิดข้างขวา h2 0.5rem */
-    white-space: nowrap !important;
-  }
-}
+    .qBox { border:2px solid #525150; border-radius:12px; padding:1rem; margin-bottom:1rem; }
+    .btn-indigo { background-color:#c14242; color:#fff; transition:0.3s; }
+    .btn-indigo:hover { background-color:#FFCE00; color:#000; }
   </style>
 </head>
-
 <body>
 
-  <!-- =====================================================
-       3) SECTION: หน้าเมนูหลัก (menuSection)
-       – แสดงไอคอนวัสดุต่างๆ พร้อม “stock” สดๆ จาก Firebase
-       – แต่ละไอคอนเป็นลิงก์ ?page=<a4|pen|tape|stapler|g22>
-       ===================================================== -->
-<section id="menuSection">
-  <div id="menuContent">
-  <div class="form-header mb-4 d-flex align-items-center">
-    <!-- โลโก้เล็ก ๆ ด้านซ้าย -->
-    <img src="https://raw.githubusercontent.com/060531/images/main/Photoroom_25680609_212938.png"
-         alt="โลโก้ระบบ"
-         class="logo-img" />
-    <!-- ส่วนหัว title + subtitle -->
-    <div>
-      <h2 class="form-title mb-1">
-        <span style="font-weight:bold; color:red;">POST</span>
-        <span style="font-weight:bold; color:rgb(1, 68, 1);">พอเพียง</span>
-        <span style="font-weight:bold; color:red;">SYSTEM</span>
-      </h2>
-      <small class="form-subtitle">ระบบบริหารจัดการวัสดุสิ้นเปลืองสำนักงาน</small>
-    </div>
-  </div>
-
-        <div class="container">
-          <div class="row justify-content-center g-4">
-            <!-- กระดาษ A4 -->
-            <div class="col-6 col-md-4 text-center">
-              <a href="?page=a4">
-                <img src="https://raw.githubusercontent.com/060531/images/main/A4%20supreme1.png"
-                     alt="กระดาษ A4"
-                     class="img-fluid rounded shadow-sm selectable-img" />
-              </a>
-              <div class="mt-2 fw-bold">📄 กระดาษ A4</div>
-              <div id="stock-a4" class="text-muted">คงเหลือ: …</div>
-            </div>
-
-            <!-- เทปใส -->
-            <div class="col-6 col-md-4 text-center">
-              <a href="?page=pen">
-                <img src="https://raw.githubusercontent.com/060531/images/main/เทปใส.jpg"
-                     alt="เทปใส"
-                     class="img-fluid rounded shadow-sm selectable-img" />
-              </a>
-              <div class="mt-2 fw-bold">✏️ เทปใส</div>
-              <div id="stock-Clear Tape" class="text-muted">คงเหลือ: …</div>
-            </div>
-
-            <!-- เทปน้ำตาล -->
-            <div class="col-6 col-md-4 text-center">
-              <a href="?page=tape">
-                <img src="https://raw.githubusercontent.com/060531/images/main/เทป.jpg"
-                     alt="เทปน้ำตาล"
-                     class="img-fluid rounded shadow-sm selectable-img" />
-              </a>
-              <div class="mt-2 fw-bold">📎 เทปน้ำตาล</div>
-              <div id="stock-Brown Tape" class="text-muted">คงเหลือ: …</div>
-            </div>
-
-          <!-- ลวดเย็บกระดาษ -->
+  <!-- SECTION: เมนูหลัก -->
+  <section id="menuSection">
+    <div id="menuContent">
+      <div class="form-header d-flex mb-4">
+        <img src="https://raw.githubusercontent.com/060531/images/main/Photoroom_25680609_212938.png"
+             alt="โลโก้ระบบ" class="logo-img" />
+        <div>
+          <h2 class="form-title mb-1">
+            <span style="color:red;">POST</span>
+            <span style="color:rgb(1,68,1)">พอเพียง</span>
+            <span style="color:red;">SYSTEM</span>
+          </h2>
+          <small class="form-subtitle">ระบบบริหารจัดการวัสดุสิ้นเปลืองสำนักงาน</small>
+        </div>
+      </div>
+      <div class="container">
+        <div class="row justify-content-center g-4">
+          <!-- กระดาษ A4 -->
+          <div class="col-6 col-md-4 text-center">
+            <a href="?page=a4">
+              <img src="https://raw.githubusercontent.com/060531/images/main/A4%20supreme1.png"
+                   alt="กระดาษ A4" class="img-fluid rounded shadow-sm" />
+            </a>
+            <div class="mt-2 fw-bold">📄 กระดาษ A4</div>
+            <div id="stock-a4" class="text-muted">คงเหลือ: …</div>
+          </div>
+          <!-- เทปใส -->
+          <div class="col-6 col-md-4 text-center">
+            <a href="?page=pen">
+              <img src="https://raw.githubusercontent.com/060531/images/main/เทปใส.jpg"
+                   alt="เทปใส" class="img-fluid rounded shadow-sm" />
+            </a>
+            <div class="mt-2 fw-bold">✏️ เทปใส</div>
+            <div id="stock-Clear Tape" class="text-muted">คงเหลือ: …</div>
+          </div>
+          <!-- เทปน้ำตาล -->
+          <div class="col-6 col-md-4 text-center">
+            <a href="?page=tape">
+              <img src="https://raw.githubusercontent.com/060531/images/main/เทป.jpg"
+                   alt="เทปน้ำตาล" class="img-fluid rounded shadow-sm" />
+            </a>
+            <div class="mt-2 fw-bold">📎 เทปน้ำตาล</div>
+            <div id="stock-Brown Tape" class="text-muted">คงเหลือ: …</div>
+          </div>
+          <!-- ลวดเย็บ -->
           <div class="col-6 col-md-4 text-center">
             <a href="?page=stapler">
-              <img src="https://raw.githubusercontent.com/060531/images/main/Max8.jpg" alt="ลวดเย็บกระดาษ"
-                   class="img-fluid rounded shadow-sm selectable-img" />
+              <img src="https://raw.githubusercontent.com/060531/images/main/Max8.jpg"
+                   alt="ลวดเย็บกระดาษ" class="img-fluid rounded shadow-sm" />
             </a>
             <div class="mt-2 fw-bold">📌 ลวดเย็บกระดาษ</div>
             <div id="stock-stapler" class="text-muted">คงเหลือ: …</div>
           </div>
-
-            <!-- แฟ้มเอกสาร ก.22 -->
-            <div class="col-6 col-md-4 text-center">
-              <a href="?page=g22">
-                <img src="https://raw.githubusercontent.com/060531/images/main/รวมแฟ้ม.png"
-                     alt="แฟ้มเอกสาร ก.22"
-                     class="img-fluid rounded shadow-sm selectable-img" />
-              </a>
-              <div class="mt-2 fw-bold">📁 แฟ้มเอกสาร ก.22</div>
-              <div id="stock-g22" class="text-muted">คงเหลือ: …</div>
-            </div>
+          <!-- แฟ้ม ก.22 -->
+          <div class="col-6 col-md-4 text-center">
+            <a href="?page=g22">
+              <img src="https://raw.githubusercontent.com/060531/images/main/รวมแฟ้ม.png"
+                   alt="แฟ้ม ก.22" class="img-fluid rounded shadow-sm" />
+            </a>
+            <div class="mt-2 fw-bold">📁 แฟ้ม ก.22</div>
+            <div id="stock-g22" class="text-muted">คงเหลือ: …</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-
-  <!-- =======================================================
-       4) SECTION: หน้าเลือกสีแฟ้ม ก.22 (g22Section)
-       – แสดงเมื่อ ?page=g22 (ยังไม่มี &color=…)  
-       – เมื่อคลิกสี → เปลี่ยน URL เป็น ?page=g22&color=<สี>  
-       – ดึงสต็อกแต่ละสีจาก stock/g22/{ชื่อสี} มาแสดง  
-       ======================================================= -->
-  <section id="g22Section" style="display: none;">
+  <!-- SECTION: เลือกสีแฟ้ม ก.22 -->
+  <section id="g22Section">
     <div class="container d-flex justify-content-center align-items-center min-vh-100">
       <div id="g22Content" class="w-100">
         <div class="form-header text-center mb-4">
-          <h2 class="form-title">📁 เลือกสีแฟ้มเอกสาร ก.22</h2>
+          <h2 class="form-title">📁 เลือกสีแฟ้ม ก.22</h2>
           <small class="form-subtitle">สำนักงานไปรษณีย์เขต 9</small>
         </div>
-
         <div class="container">
           <div class="row justify-content-center g-4">
             <!-- สี 1: แฟ้มสีเหลือง -->
@@ -364,25 +241,15 @@
             </div>
           </div> <!-- end .row -->
 
-          <!-- ปุ่มกลับหน้าหลัก -->
-          <div class="text-center mt-4">
-            <a href="?" class="btn btn-secondary btn-lg px-4">
-              <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
-            </a>
-          </div>
-        </div> <!-- end .container -->
-      </div> <!-- end #g22Content -->
-    </div> <!-- end .container -->
+      </div>
+    </div>
   </section>
 
- 
-  <!-- =======================================================
-       4.1) SECTION: หน้าเลือกขนาดลวดเย็บกระดาษ (staplerSelectSection)
-       ======================================================= -->
-<section id="staplerSelectSection">
-  <div class="container d-flex justify-content-center align-items-center min-vh-100">
-    <div id="staplerSelectContent" class="w-100">
-      <div class="form-header text-center mb-4">
+  <!-- SECTION: เลือกขนาดลวดเย็บกระดาษ -->
+  <section id="staplerSelectSection">
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+      <div id="staplerSelectContent" class="w-100">
+       <div class="form-header text-center mb-4">
         <h2 class="form-title">📌 เลือกขนาดลวดเย็บกระดาษ</h2>
         <small class="form-subtitle">สำนักงานไปรษณีย์เขต 9</small>
       </div>
@@ -417,23 +284,16 @@
           </div>
         </div>
       </div>
-      <div class="text-center mt-4">
-          <div class="text-center mt-4">
-            <a href="?" class="btn btn-secondary btn-lg px-4">
-              <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
-            </a>
-          </div>
+        <div class="text-center mt-4">
+          <a href="?" class="btn btn-secondary btn-lg px-4">
+            <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
+          </a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-
-  <!-- ===========================================================
-       5) SECTION: ฟอร์ม A4 / pen / tape / stapler / g22 (formA4Section)
-       – แสดงเมื่อมี ?page=<xxx> (หรือ ?page=g22&color=<สี>)  
-       – ซ่อน/แสดงฟิลด์ตามเงื่อนไข (แผนก, ชื่อ, ความจำเป็น, สีที่เลือก)  
-       =========================================================== -->
+  <!-- SECTION: ฟอร์มเบิก -->
   <section id="formA4Section">
     <div class="container">
       <div id="formContent" class="card p-4">
@@ -441,26 +301,20 @@
           <h4 class="mb-0" id="formTitle">ฟอร์มการเบิกใช้วัสดุ</h4>
           <small>สำนักงานไปรษณีย์เขต 9</small>
         </div>
-
         <form id="myForm">
-          <!-- 1) ประเภทการเบิก (use / admit) -->
+          <!-- 1) type -->
           <div class="qBox">
-            <label class="form-label">
-              <i class="bi bi-arrows-collapse"></i> ประเภทการเบิก
-            </label>
+            <label><i class="bi bi-arrows-collapse"></i> ประเภทการเบิก</label>
             <div>
-              <label><input type="radio" name="type" value="use" checked required> ใช้ (ตัดสต็อก)</label><br />
+              <label><input type="radio" name="type" value="use" checked required> ใช้</label><br>
               <label><input type="radio" name="type" value="admit"> เติมสต็อก</label>
             </div>
           </div>
-
-          <!-- 2) แผนก (โชว์เฉพาะ use + page != g22) -->
+          <!-- 2) แผนก -->
           <div class="qBox" id="departmentBox">
-            <label for="department" class="form-label">
-              <i class="bi bi-building"></i> แผนก
-            </label>
+            <label for="department"><i class="bi bi-building"></i> แผนก</label>
             <select id="department" name="department" class="form-control" required>
-              <option value="" disabled selected>เลือก..</option>
+                <option value="" disabled selected>เลือก..</option>
               <option value="ผู้บริหาร ปข.9">ผู้บริหาร ปข.9</option>
               <option value="ส่วนอำนวยการและบุคคล">ส่วนอำนวยการและบุคคล</option>
               <option value="ส่วนทรัพย์สินและพัสดุ">ส่วนทรัพย์สินและพัสดุ</option>
@@ -471,63 +325,39 @@
               <option value="ส่วนทีมขายและดูแลลูกค้า">ส่วนทีมขายและดูแลลูกค้า</option>
             </select>
           </div>
-
-          <!-- 3) ชื่อผู้ขอเบิก (โชว์เฉพาะ use + page != g22) -->
+          <!-- 3) ชื่อผู้ขอเบิก -->
           <div class="qBox" id="fnameBox">
-            <label for="fname" class="form-label">
-              <i class="bi bi-person-workspace"></i> ลงชื่อผู้ขอเบิก
-            </label>
+            <label for="fname"><i class="bi bi-person-workspace"></i> ลงชื่อผู้ขอเบิก</label>
             <select id="fname" name="fname" class="form-control" required>
-              <option value="" selected disabled>กรุณาเลือกแผนกก่อน...</option>
+              <option disabled selected>กรุณาเลือกแผนกก่อน…</option>
             </select>
           </div>
-
-          <!-- 4) จำนวนที่เบิก / เติม -->
+          <!-- 4) จำนวน -->
           <div class="qBox">
-            <label for="quantity" class="form-label">
-              <i class="bi bi-list-ol"></i> จำนวนที่เบิก / เติม
-            </label>
+            <label for="quantity"><i class="bi bi-list-ol"></i> จำนวนที่เบิก/เติม</label>
             <select id="quantity" name="quantity" class="form-control" required>
               <option value="" disabled selected>เลือก..</option>
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
-              <option value="6">6</option>
-              <option value="7">7</option>
-              <option value="8">8</option>
-              <option value="9">9</option>
-              <option value="10">10</option>
+              <option value="1">1</option><option value="2">2</option>
+              <!-- … -->
               <option value="อื่น ๆ">อื่น ๆ</option>
             </select>
           </div>
-
-          <!-- 5) ข้อมูลเพิ่มเติม (ถ้าเลือก “อื่น ๆ”) -->
+          <!-- 5) กรณีอื่น ๆ -->
           <div class="qBox" id="additionalInfoField" style="display:none">
-            <label for="additionalInfo" class="form-label">
-              <i class="fa-solid fa-info-circle"></i> ข้อมูลเพิ่มเติม
-            </label>
-            <input type="text" id="additionalInfo" name="additionalInfo" class="form-control" placeholder="กรอกข้อมูลเพิ่มเติม" />
+            <label for="additionalInfo"><i class="fa-solid fa-info-circle"></i> ข้อมูลเพิ่มเติม</label>
+            <input type="text" id="additionalInfo" name="additionalInfo" class="form-control" placeholder="กรอกเพิ่มเติม">
           </div>
-
-          <!-- 6) ความจำเป็นที่เบิก / รายละเอียด (โชว์เฉพาะ use + page != g22) -->
+          <!-- 6) รายละเอียด -->
           <div class="qBox" id="purposeField">
-            <label for="purposeDetails" class="form-label">
-              <i class="bi bi-journal"></i> ความจำเป็นที่เบิก / รายละเอียด
-            </label>
+            <label for="purposeDetails"><i class="bi bi-journal"></i> ความจำเป็น/รายละเอียด</label>
             <textarea id="purposeDetails" name="purposeDetails" class="form-control" rows="3"
-                      placeholder="กรอกรายละเอียดความจำเป็นในการเบิก..." required></textarea>
+                      placeholder="กรอกรายละเอียด" required></textarea>
           </div>
-
-          <!-- 7) สีที่เลือก (แฟ้ม ก.22) – แสดงเฉพาะกรณี page=g22 -->
+          <!-- 7) สีที่เลือก (แฟ้ม ก.22) -->
           <div class="qBox" id="g22ColorField" style="display:none">
-            <label class="form-label">
-              <i class="bi bi-brush"></i> สีที่เลือก (แฟ้ม ก.22)
-            </label>
-            <input type="text" id="g22Color" class="form-control" readonly />
+            <label><i class="bi bi-brush"></i> สีที่เลือก (แฟ้ม ก.22)</label>
+            <input type="text" id="g22Color" class="form-control" readonly>
           </div>
-
           <!-- 8) ปุ่ม Submit -->
           <div class="d-grid mt-4">
             <button type="button" id="submitBtn" class="btn btn-indigo btn-lg">
@@ -535,33 +365,24 @@
               <span id="submitText">Submit</span>
             </button>
           </div>
-
-          <!-- 9) ปุ่มกลับหน้าหลัก -->
+          <!-- 9) กลับหน้าหลัก -->
           <div class="text-center mt-4">
             <a href="?" class="btn btn-secondary btn-lg px-4">
               <i class="bi bi-arrow-left-circle"></i> กลับหน้าหลัก
             </a>
           </div>
         </form>
-      </div> <!-- end #formContent -->
+      </div>
     </div>
   </section>
 
-
-  <!-- =======================
-       6) Firebase SDKs 
-       – ต้องวางก่อนโค้ด JS ที่เรียกใช้งาน Firebase Database
-       ======================= -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   <script>
-    /* ==========================================================================
-       7) JavaScript หลัก – สลับ Section, ดึงสต็อก, บันทึกข้อมูล
-       ========================================================================== */
-
-    // 7.1) เริ่มต้น Firebase
+    // 1) init Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyD-zmfm2lwN004FtxD-ApZXjleUQsbqIhE",
       authDomain: "office-supply-form.firebaseapp.com",
@@ -575,89 +396,56 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
 
-
-    // 7.2) toggleSections() – เปลี่ยนหน้าจอ ตาม URL
+    // 2) สลับ Section ตาม ?page, color, size
     function toggleSections() {
-      const urlParams            = new URLSearchParams(window.location.search);
-      const page                 = urlParams.get('page');
-      const color                = urlParams.get('color') || '';
-      const size                 = urlParams.get('size')  || '';
-
-      const menuSection          = document.getElementById('menuSection');
-      const g22Section           = document.getElementById('g22Section');
-      const staplerSelectSection = document.getElementById('staplerSelectSection');
-      const formSection          = document.getElementById('formA4Section');
-
-      // ซ่อนทุก section
-      [menuSection, g22Section, staplerSelectSection, formSection]
-        .forEach(s => s.style.display = 'none');
-
-      // แสดงตามเงื่อนไข
-      if (!page) {
-        menuSection.style.display = 'block';
+      const params = new URLSearchParams(location.search);
+      const p = params.get('page');
+      const c = params.get('color');
+      const s = params.get('size');
+      ['menuSection','g22Section','staplerSelectSection','formA4Section']
+        .forEach(id => {
+          const el = document.getElementById(id);
+          if(el) el.style.display = 'none';
+        });
+      if (!p) {
+        document.getElementById('menuSection').style.display = 'block';
         return;
       }
-      if (page === 'g22' && !color) {
-        g22Section.style.display = 'block';
+      if (p==='g22' && !c) {
+        document.getElementById('g22Section').style.display = 'block';
         return;
       }
-      if (page === 'stapler' && !size) {
-        staplerSelectSection.style.display = 'block';
+      if (p==='stapler' && !s) {
+        document.getElementById('staplerSelectSection').style.display = 'block';
         return;
       }
-      formSection.style.display = 'block';
-
-      // 1) สร้าง titleMap ให้รองรับ size สำหรับ stapler
-const titleMap = {
-  'a4':      'ฟอร์มการเบิกใช้กระดาษ A4',
-  'pen':     'ฟอร์มการเบิกใช้เทปใส',
-  'tape':    'ฟอร์มการเบิกใช้เทปน้ำตาล',
-  'stapler': `ฟอร์มการเบิกใช้ลวดเย็บกระดาษ (${size})`,
-  'g22':     `ฟอร์มการเบิกแฟ้ม ก.22 (${decodeURIComponent(color)})`
-};
-const formTitleEl = document.querySelector('#formA4Section h4');
-formTitleEl.innerText = titleMap[page] || 'ฟอร์มการเบิกใช้วัสดุสำนักงาน';
-
-// 2) ซ่อน/แสดงฟิลด์ภายในฟอร์ม ตามกรณี g22 หรือ stapler
-const g22ColorField    = document.getElementById('g22ColorField');
-const staplerSizeField = document.getElementById('staplerSizeField');
-const departmentBox    = document.getElementById('departmentBox');
-const fnameBox         = document.getElementById('fnameBox');
-const purposeField     = document.getElementById('purposeField');
-
-if (page === 'g22') {
-  // ถ้าเป็นแฟ้ม ก.22
-  g22ColorField.style.display    = 'block';
-  staplerSizeField.style.display = 'none';
-  document.getElementById('g22Color').value = decodeURIComponent(color);
-
-} else if (page === 'stapler') {
-  // ถ้าเป็น stapler
-  staplerSizeField.style.display = 'block';
-  g22ColorField.style.display    = 'none';
-  document.getElementById('staplerSize').value = size;
-
-} else {
-  // กรณีอื่น ๆ
-  g22ColorField.style.display    = 'none';
-  staplerSizeField.style.display = 'none';
-}
-
-// 3) ฟิลด์ทั่วไป ให้แสดงเสมอ (ยกเว้นกรณี admit จะซ่อนภายหลัง)
-departmentBox.style.display = 'block';
-fnameBox.style.display      = 'block';
-purposeField.style.display  = 'block';
+      document.getElementById('formA4Section').style.display = 'block';
+      // ปรับข้อความ title
+      const titleMap = {
+        'a4':   'ฟอร์มการเบิกใช้กระดาษ A4',
+        'pen':  'ฟอร์มการเบิกใช้เทปใส',
+        'tape': 'ฟอร์มการเบิกใช้เทปน้ำตาล',
+        'stapler': `ฟอร์มการเบิกใช้ลวดเย็บกระดาษ (${s})`,
+        'g22':  `ฟอร์มการเบิกแฟ้ม ก.22 (${decodeURIComponent(c)})`
+      };
+      document.querySelector('#formA4Section h4').innerText = titleMap[p] || 'ฟอร์มการเบิกใช้วัสดุ';
+      // ซ่อน/แสดงฟิลด์ใน form
+      const dep = document.getElementById('departmentBox');
+      const fn  = document.getElementById('fnameBox');
+      const pur = document.getElementById('purposeField');
+      const gcol= document.getElementById('g22ColorField');
+      if (p==='g22') {
+        gcol.style.display = 'block';
+        dep.style.display = fn.style.display = pur.style.display = 'none';
+        document.getElementById('g22Color').value = decodeURIComponent(c);
+      } else {
+        gcol.style.display = 'none';
+        dep.style.display = fn.style.display = pur.style.display = 'block';
       }
-    
+    }
 
-    // เรียก toggleSections() เมื่อ DOM โหลดเสร็จ
-    window.addEventListener('DOMContentLoaded', () => {
-      toggleSections();
-
-
-      // ====================================================
-      // 7.3) เติม “ชื่อผู้ขอเบิก” อัตโนมัติ เมื่อเลือกแผนก
-      // ====================================================
+    // 3) เติมชื่อพนักงานตามแผนก
+    function setupDeptFiller() {
       const usersByDepartment = {
         "ผู้บริหาร ปข.9":           ["นายฉัตรชัย อุดมพงษ์","นายสกลสิทธิ์ สุหลง","นายธีรวัฒน์ กองเม่ง"],
         "ส่วนอำนวยการและบุคคล":     ["นายสกล แก้วสุวรรณ","ว่าที่ ร.ต.อุทธิศักดิ์ พู่วณิชย์","นางลาภนุช มากมณี","นางสาวนันทิกา จันทร์คง","นางสาวศศิวิมล โสตถิสถาวร","นางสาวจิราณณฑ์ ปิ่นทอง","นางสาวศสิกาญจน์ ไวเรืองศิริพงศ์","นางสาวกันทิมา เอียดแก้ว","ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์","นางสาวปรีดา จันทร์จุฬา","นายอรรถกร วันเย็น"],
@@ -668,246 +456,133 @@ purposeField.style.display  = 'block';
         "ส่วนบริการหลังการขายและคุณภาพ": ["นายชัยวุฒิ ถนอมศรี","นายกฤษดา คำจีน","นายคมชาญ สัตตหิรัญ","นางสาวรชฏ อินทมะโน","นางสาวอะรีนา มะสาลี"],
         "ส่วนทีมขายและดูแลลูกค้า":     ["นายมะการิม ดอเลาะ","นายกฤตนัย เกื้อนุ่น","นายฟาดิส เบญอาเหม็ด","นางสาวธฤคภร มหโชคภัทรเวคิน"]
       };
-
-      const deptSelect = document.getElementById('department');
-      if (deptSelect) {
-        deptSelect.addEventListener('change', function() {
-          const dept = this.value;
-          const fnameSelect = document.getElementById('fname');
-          fnameSelect.innerHTML = '<option value="" disabled selected>เลือก..</option>';
-          if (usersByDepartment[dept]) {
-            usersByDepartment[dept].forEach(name => {
-              const opt = document.createElement('option');
-              opt.value       = name;
-              opt.textContent = name;
-              fnameSelect.appendChild(opt);
-            });
-          }
+      const dept = document.getElementById('department');
+      const fname= document.getElementById('fname');
+      if (!dept || !fname) return;
+      dept.addEventListener('change', () => {
+        fname.innerHTML = '<option disabled selected>กรุณาเลือกแผนกก่อน…</option>';
+        (usersByDepartment[dept.value] || []).forEach(name => {
+          fname.append(new Option(name, name));
         });
-      }
+      });
+    }
 
-
-      // ==============================================================
-      // 7.4) ซ่อน/แสดงฟิลด์ตาม “ประเภทการเบิก” (use/admit)
-      // ==============================================================
+    // 4) ซ่อน/แสดงฟิลด์ตาม type use/admit
+    function setupTypeToggle() {
       document.querySelectorAll('input[name="type"]').forEach(radio => {
         radio.addEventListener('change', () => {
-          const selectedType = document.querySelector('input[name="type"]:checked').value;
-          const purposeField   = document.getElementById('purposeField');
-          const departmentBox  = document.getElementById('departmentBox');
-          const fnameBox       = document.getElementById('fnameBox');
-          const fnameSelect    = document.getElementById('fname');
-
-          if (selectedType === 'admit') {
-            // เติมสต็อก → ซ่อน purposeField / departmentBox / fnameBox
-            purposeField.style.display   = 'none';
-            departmentBox.style.display  = 'none';
-            fnameBox.style.display       = 'none';
-
-            // กำหนดชื่ออัตโนมัติเป็น “ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์”
-            fnameSelect.innerHTML = '';
-            const opt = document.createElement('option');
-            opt.value       = "ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์";
-            opt.textContent = "ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์";
-            opt.selected    = true;
-            fnameSelect.appendChild(opt);
-          } else {
-            // ใช้ (ตัดสต็อก) → แสดงฟิลด์ตามปกติ
-            purposeField.style.display   = 'block';
-            departmentBox.style.display  = 'block';
-            fnameBox.style.display       = 'block';
-            fnameSelect.innerHTML = '<option value="" selected disabled>กรุณาเลือกแผนกก่อน...</option>';
+          const dep = document.getElementById('departmentBox');
+          const fn  = document.getElementById('fnameBox');
+          const pur = document.getElementById('purposeField');
+          if (radio.value==='admit' && radio.checked) {
+            dep.style.display = fn.style.display = pur.style.display = 'none';
+            const f = document.getElementById('fname');
+            f.innerHTML = '';
+            const o = new Option('ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์','ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์');
+            o.selected = true; f.append(o);
+          } else if (radio.value==='use' && radio.checked) {
+            dep.style.display = fn.style.display = pur.style.display = 'block';
+            const f = document.getElementById('fname');
+            f.innerHTML = '<option disabled selected>กรุณาเลือกแผนกก่อน…</option>';
           }
         });
       });
+      // trigger initial
+      document.querySelector('input[name="type"]:checked').dispatchEvent(new Event('change'));
+    }
 
-      // ตอนโหลดหน้า formA4Section ครั้งแรก ให้ตั้งค่า default ตามประเภท
-      window.addEventListener('DOMContentLoaded', () => {
-        const defaultType = document.querySelector('input[name="type"]:checked').value;
-        const purposeField = document.getElementById('purposeField');
-        const departmentBox = document.getElementById('departmentBox');
-        const fnameBox      = document.getElementById('fnameBox');
-        const fnameSelect   = document.getElementById('fname');
+    // 5) ซ่อน/แสดง “อื่น ๆ”
+    function setupQuantityToggle() {
+      const q = document.getElementById('quantity');
+      if (!q) return;
+      q.addEventListener('change', () => {
+        document.getElementById('additionalInfoField')
+                .style.display = (q.value==='อื่น ๆ') ? 'block' : 'none';
+      });
+    }
 
-        if (defaultType === 'admit') {
-          purposeField.style.display   = 'none';
-          departmentBox.style.display  = 'none';
-          fnameBox.style.display       = 'none';
-          fnameSelect.innerHTML = '';
-          const opt = document.createElement('option');
-          opt.value       = "ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์";
-          opt.textContent = "ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์";
-          opt.selected    = true;
-          fnameSelect.appendChild(opt);
-        } else {
-          purposeField.style.display   = 'block';
-          departmentBox.style.display  = 'block';
-          fnameBox.style.display       = 'block';
+    // 6) Submit → บันทึก + update stock
+    function setupSubmit() {
+      const btn = document.getElementById('submitBtn');
+      btn.addEventListener('click', () => {
+        const P     = new URLSearchParams(location.search);
+        const page  = P.get('page') || 'unknown';
+        const color = P.get('color') || '';
+        const size  = P.get('size')  || '';
+        const type  = document.querySelector('input[name="type"]:checked').value;
+        const dept  = document.getElementById('department')?.value || '';
+        const fname = document.getElementById('fname')?.value      || '';
+        const raw   = document.getElementById('quantity')?.value  || '';
+        const add   = document.getElementById('additionalInfo')?.value || '';
+        const pur   = document.getElementById('purposeDetails')?.value  || '';
+        let qty = parseInt(raw) || 0;
+        if (raw==='อื่น ๆ') qty = parseInt(add) || 0;
+        // validation
+        if (page==='g22') {
+          if (!color || qty<1) return Swal.fire('ระบุสีและจำนวนให้ถูกต้อง');
+        } else if (type==='use') {
+          if (!dept || !fname || qty<1 || isNaN(qty)) return Swal.fire('กรอกข้อมูลให้ครบ');
         }
+        // push entry
+        btn.innerText='กำลังบันทึก…'; btn.disabled=true;
+        const entry = {
+          timestamp: new Date().toISOString(),
+          time:      new Date().toLocaleString(),
+          type, page, color, size, fname, dept, qty, purpose:pur
+        };
+        db.ref('supplies').push(entry, err => {
+          btn.innerText='Submit'; btn.disabled=false;
+          if (err) return Swal.fire('บันทึกไม่สำเร็จ');
+          // update stock
+          let key = page;
+          if (page==='g22') key = `g22/${color}`;
+          if (page==='stapler') key = `stapler/${size.replace('.','_')}`;
+          db.ref(`stock/${key}`).transaction(c => c ? (type==='admit'?c+qty:c-qty) : (type==='admit'?qty:0));
+          document.getElementById('myForm').reset();
+          toggleSections();
+          Swal.fire('บันทึกเรียบร้อย');
+        });
       });
+    }
 
-
-      // ============================================================
-      // 7.5) ซ่อน/แสดงช่อง “ข้อมูลเพิ่มเติม” เมื่อเลือก quantity="อื่น ๆ"
-      // ============================================================
-      const qtySelect = document.getElementById('quantity');
-      if (qtySelect) {
-        qtySelect.addEventListener('change', function() {
-          document.getElementById('additionalInfoField').style.display =
-            this.value === 'อื่น ๆ' ? 'block' : 'none';
+    // 7) ฟังค่าสต็อกสดๆ
+    function setupStockListener() {
+      db.ref('stock').on('value', snap => {
+        const D = snap.val()||{};
+        // เมนูหลัก
+        [['a4','a4'],['Clear Tape','Clear Tape'],['Brown Tape','Brown Tape'],
+         ['stapler','stapler'],['g22','g22']].forEach(([k,id])=>{
+          const el = document.getElementById(`stock-${id}`);
+          if (!el) return;
+          let v = D[k];
+          if (k==='stapler' && typeof v==='object')
+            v = Object.values(v).reduce((s,x)=>s+(parseInt(x)||0),0);
+          if (k==='g22'     && typeof D.g22==='object')
+            v = Object.values(D.g22).reduce((s,x)=>s+(parseInt(x)||0),0);
+          el.innerText = `คงเหลือ: ${v||0}`;
         });
-      }
-
-
-      // ================================================================
-      // 7.6) เมื่อกดปุ่ม “Submit” – บันทึก /supplies และอัปเดต stock
-      // ================================================================
-      const myForm = document.getElementById('myForm');
-      if (myForm) {
-        document.getElementById('submitBtn').addEventListener('click', () => {
-          const urlParams   = new URLSearchParams(window.location.search);
-          const page        = urlParams.get('page') || 'unknown';
-          const colorParam  = urlParams.get('color') || '';
-          const type        = document.querySelector('input[name="type"]:checked').value;
-          const fname       = document.getElementById('fname').value;
-          const department  = document.getElementById('department').value;
-          const quantityRaw = document.getElementById('quantity').value;
-          const additionalInfo = document.getElementById('additionalInfo').value || '';
-          const purpose     = document.getElementById('purposeDetails')?.value || '';
-
-          // แปลง quantity ถ้าเลือก “อื่น ๆ”
-          let quantity = parseInt(quantityRaw, 10);
-          if (quantityRaw === 'อื่น ๆ') {
-            quantity = parseInt(additionalInfo, 10);
-          }
-
-          // ตรวจสอบเงื่อนไขก่อนบันทึก
-          if (page === 'g22') {
-            if (!colorParam || isNaN(quantity) || quantity < 1) {
-              Swal.fire({ icon: 'warning', title: 'กรุณาเลือกสีและกรอกจำนวนให้ถูกต้อง' });
-              return;
-            }
-          } else {
-            if (!fname || !department || !quantity || isNaN(quantity)) {
-              Swal.fire({ icon: 'warning', title: 'กรุณากรอกข้อมูลให้ครบถ้วน' });
-              return;
-            }
-          }
-
-          // เปลี่ยนข้อความปุ่มเป็น “กำลังบันทึกข้อมูล...”
-          document.getElementById('submitText').innerText = 'กำลังบันทึกข้อมูล...';
-          document.getElementById('spinner').classList.remove('d-none');
-
-          // เตรียมอ็อบเจ็กต์ entry
-          const entry = {
-            timestamp: new Date().toISOString(),
-            time: new Date().toLocaleString(),
-            type,
-            page,
-            color: colorParam,
-            fname,
-            department,
-            quantity,
-            purpose
-          };
-
-          // 1) บันทึก entry ลง node supplies
-          db.ref('supplies').push(entry, (error) => {
-            // เปลี่ยนกลับปุ่มเป็น “Submit”
-            document.getElementById('submitText').innerText = 'Submit';
-            document.getElementById('spinner').classList.add('d-none');
-
-            if (error) {
-              Swal.fire({ icon: 'error', title: 'เกิดข้อผิดพลาดในการบันทึก' });
-            } else {
-              // 2) อัปเดต stock
-              let stockKey = page;
-              if (page === 'g22') {
-                // ใช้ path "stock/g22/<สีที่เลือก>"
-                stockKey = `g22/${colorParam}`; 
-              }
-              const qty = parseInt(quantity, 10);
-              const stockRef = db.ref(`stock/${stockKey}`);
-              stockRef.transaction(curr => {
-                if (curr === null) curr = 0;
-                return (type === 'admit')
-                  ? curr + qty
-                  : Math.max(curr - qty, 0);
-              });
-
-              // รีเซ็ตฟอร์ม
-              myForm.reset();
-              document.getElementById('additionalInfoField').style.display = 'none';
-              Swal.fire({ icon: 'success', title: 'บันทึกข้อมูลเรียบร้อย' });
-            }
-          });
+        // per-color g22
+        document.querySelectorAll('.stock-g22').forEach(el=>{
+          const col = el.dataset.color;
+          el.innerText = `คงเหลือ: ${D.g22?.[col]||0}`;
         });
-      }
-
-
-      // =====================================================================================
-      // 7.7) อ่าน “stock รวม” (หน้าเมนูหลัก) และ “stock แต่ละสี” (หน้า g22Section) จาก Firebase
-      // =====================================================================================
-     window.addEventListener('load', () => {
-  const stockElements = {
-    "a4":         document.getElementById("stock-a4"),
-    "Clear Tape": document.getElementById("stock-Clear Tape"),
-    "Brown Tape": document.getElementById("stock-Brown Tape"),
-    "stapler":    document.getElementById("stock-stapler"),
-    "g22":        document.getElementById("stock-g22")
-  };
-
-  db.ref("stock").on("value", (snapshot) => {
-    const stockData = snapshot.val() || {};
-
-    // —— อัปเดต stock หน้าเมนูหลัก ——
-    if (stockData["a4"] !== undefined) {
-      stockElements["a4"].innerText = `คงเหลือ: ${stockData["a4"]}`;
-    }
-    if (stockData["Clear Tape"] !== undefined) {
-      stockElements["Clear Tape"].innerText = `คงเหลือ: ${stockData["Clear Tape"]}`;
-    }
-    if (stockData["Brown Tape"] !== undefined) {
-      stockElements["Brown Tape"].innerText = `คงเหลือ: ${stockData["Brown Tape"]}`;
+        // per-size stapler
+        document.querySelectorAll('.stock-stapler').forEach(el=>{
+          const key = el.dataset.key;
+          el.innerText = `คงเหลือ: ${D.stapler?.[key]||0}`;
+        });
+      });
     }
 
-    // stapler รวมทุกขนาด
-    if (stockData["stapler"] && typeof stockData["stapler"] === "object") {
-      const totalStapler = Object.values(stockData["stapler"])
-        .reduce((sum, v) => sum + (parseInt(v,10) || 0), 0);
-      stockElements["stapler"].innerText = `คงเหลือ (รวมทุกขนาด): ${totalStapler}`;
-    } else if (stockData["stapler"] !== undefined) {
-      stockElements["stapler"].innerText = `คงเหลือ: ${stockData["stapler"]}`;
-    }
-
-    // g22 รวมทุกสี
-    if (stockData["g22"]) {
-      const totalG22 = Object.values(stockData["g22"])
-        .reduce((sum, v) => sum + (parseInt(v,10) || 0), 0);
-      stockElements["g22"].innerText = `คงเหลือ (รวมทุกสี): ${totalG22}`;
-    }
-
-    // —— อัปเดต stock per-color ของ g22 ——
-    document.querySelectorAll('.stock-g22').forEach(el => {
-      const colorName = el.dataset.color;
-      const cnt = (stockData["g22"] && stockData["g22"][colorName] !== undefined)
-                  ? stockData["g22"][colorName]
-                  : 0;
-      el.innerText = `คงเหลือ: ${cnt}`;
+    // on load
+    document.addEventListener('DOMContentLoaded', () => {
+      toggleSections();
+      setupDeptFiller();
+      setupTypeToggle();
+      setupQuantityToggle();
+      setupSubmit();
+      setupStockListener();
     });
-
-    // —— อัปเดต stock per-size ของ stapler ——
-    document.querySelectorAll('.stock-stapler').forEach(el => {
-      const key = el.dataset.key; // เช่น "No_10" หรือ "No_35"
-      const cnt = (stockData["stapler"] && stockData["stapler"][key] !== undefined)
-                  ? stockData["stapler"][key]
-                  : 0;
-      el.innerText = `คงเหลือ: ${cnt}`;
-    });
-
-  });
-});
-    }); // จบ window.DOMContentLoaded
   </script>
 
 </body>
