@@ -23,7 +23,7 @@
     }
     /* กล่องเนื้อหา */
     #menuContent, #g22Content, #staplerSelectContent, #formContent {
-      background-color: rgba(255,255,255,0.85);
+      background-color: rgba(255, 255, 255, 0.617);
       padding: 2rem; border-radius: 1rem;
       box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       width: 100%; max-width: 900px; margin: 5vh auto 0;
@@ -79,7 +79,7 @@
           </div>
           <!-- เทปใส -->
           <div class="col-6 col-md-4 text-center">
-            <a href="?page=pen">
+            <a href="?page=cleartape">
               <img src="https://raw.githubusercontent.com/060531/images/main/เทปใส.jpg"
                    alt="เทปใส" class="img-fluid rounded shadow-sm" />
             </a>
@@ -88,7 +88,7 @@
           </div>
           <!-- เทปน้ำตาล -->
           <div class="col-6 col-md-4 text-center">
-            <a href="?page=tape">
+            <a href="?page=browntape">
               <img src="https://raw.githubusercontent.com/060531/images/main/เทป.jpg"
                    alt="เทปน้ำตาล" class="img-fluid rounded shadow-sm" />
             </a>
@@ -337,8 +337,16 @@
             <label for="quantity"><i class="bi bi-list-ol"></i> จำนวนที่เบิก/เติม</label>
             <select id="quantity" name="quantity" class="form-control" required>
               <option value="" disabled selected>เลือก..</option>
-              <option value="1">1</option><option value="2">2</option>
-              <!-- … -->
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+              <option value="9">9</option>
+              <option value="10">10</option>
               <option value="อื่น ๆ">อื่น ๆ</option>
             </select>
           </div>
@@ -423,8 +431,8 @@
       // ปรับข้อความ title
       const titleMap = {
         'a4':   'ฟอร์มการเบิกใช้กระดาษ A4',
-        'pen':  'ฟอร์มการเบิกใช้เทปใส',
-        'tape': 'ฟอร์มการเบิกใช้เทปน้ำตาล',
+        'cleartape':  'ฟอร์มการเบิกใช้เทปใส',
+        'browntape': 'ฟอร์มการเบิกใช้เทปน้ำตาล',
         'stapler': `ฟอร์มการเบิกใช้ลวดเย็บกระดาษ (${s})`,
         'g22':  `ฟอร์มการเบิกแฟ้ม ก.22 (${decodeURIComponent(c)})`
       };
@@ -468,28 +476,66 @@
     }
 
     // 4) ซ่อน/แสดงฟิลด์ตาม type use/admit
-    function setupTypeToggle() {
-      document.querySelectorAll('input[name="type"]').forEach(radio => {
-        radio.addEventListener('change', () => {
-          const dep = document.getElementById('departmentBox');
-          const fn  = document.getElementById('fnameBox');
-          const pur = document.getElementById('purposeField');
-          if (radio.value==='admit' && radio.checked) {
-            dep.style.display = fn.style.display = pur.style.display = 'none';
-            const f = document.getElementById('fname');
-            f.innerHTML = '';
-            const o = new Option('ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์','ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศย์');
-            o.selected = true; f.append(o);
-          } else if (radio.value==='use' && radio.checked) {
-            dep.style.display = fn.style.display = pur.style.display = 'block';
-            const f = document.getElementById('fname');
-            f.innerHTML = '<option disabled selected>กรุณาเลือกแผนกก่อน…</option>';
-          }
-        });
-      });
-      // trigger initial
-      document.querySelector('input[name="type"]:checked').dispatchEvent(new Event('change'));
-    }
+function setupTypeToggle() {
+  // 1) เก็บ element และสำรอง HTML เดิมไว้เพื่อ restore
+  const radios    = document.querySelectorAll('input[name="type"]');
+  const depBox    = document.getElementById('departmentBox');
+  const fnBox     = document.getElementById('fnameBox');
+  const purBox    = document.getElementById('purposeField');
+  const deptSel   = document.getElementById('department');
+  const fnameSel  = document.getElementById('fname');
+  const origDeptOptions  = deptSel.innerHTML;
+  const origFnameOptions = fnameSel.innerHTML;
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', () => {
+      if (radio.value === 'admit' && radio.checked) {
+        // ——— กรณีเติมสต็อก ———
+        depBox.style.display = 'block';
+        fnBox.style.display  = 'block';
+        purBox.style.display = 'none';
+
+        // ล้างตัวเลือกแผนก แล้วเพิ่ม Option เดียว “ส่วนอำนวยการและบุคคล”
+        deptSel.innerHTML = '';
+        const optDep = new Option(
+          'ส่วนอำนวยการและบุคคล',
+          'ส่วนอำนวยการและบุคคล'
+        );
+        optDep.selected = true;
+        deptSel.append(optDep);
+        deptSel.disabled = true;
+
+        // ล้างชื่อผู้ขอเบิก แล้วเพิ่ม Option เดียว “ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศ์”
+        fnameSel.innerHTML = '';
+        const optName = new Option(
+          'ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศ์',
+          'ว่าที่ ร.ต.สุกฤษฏิ์ สุริยวงศ์'
+        );
+        optName.selected = true;
+        fnameSel.append(optName);
+        fnameSel.disabled = true;
+
+      } else if (radio.value === 'use' && radio.checked) {
+        // ——— กรณีเบิกใช้ (restore สถานะเริ่มต้น) ———
+        depBox.style.display = 'block';
+        fnBox.style.display  = 'block';
+        purBox.style.display = 'block';
+
+        // คืนตัวเลือกแผนกและปลดล็อค
+        deptSel.disabled      = false;
+        deptSel.innerHTML     = origDeptOptions;
+
+        // คืนตัวเลือกชื่อผู้ขอเบิกและปลดล็อค
+        fnameSel.disabled     = false;
+        fnameSel.innerHTML    = origFnameOptions;
+      }
+    });
+  });
+
+  // trigger ครั้งแรกตาม default radio ที่เลือกไว้
+  const init = document.querySelector('input[name="type"]:checked');
+  if (init) init.dispatchEvent(new Event('change'));
+}
 
     // 5) ซ่อน/แสดง “อื่น ๆ”
     function setupQuantityToggle() {
